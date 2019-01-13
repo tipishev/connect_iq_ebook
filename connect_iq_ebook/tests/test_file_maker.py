@@ -2,7 +2,8 @@ from unittest import skip  # noqa
 
 from unittest import TestCase
 
-from ..chunker import Chunker, FileMaker
+from ..chunker import Chunker
+from ..file_maker import FileMaker
 from ..devices import Fenix5  # , Fenix5S
 
 from .utils import in_this_dir, unity
