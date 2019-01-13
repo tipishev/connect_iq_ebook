@@ -1,6 +1,6 @@
 class BaseDevice:
 
-    def char_to_width(self, character):
+    def char_to_width(self, character: str) -> int:
         pass
 
     @property
