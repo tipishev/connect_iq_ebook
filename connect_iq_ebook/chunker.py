@@ -8,7 +8,9 @@ class Chunker:
         return len(string.encode('utf-8'))
 
     def __init__(self, buffer,
-                 max_chunk_size=None, char_to_width=None, line_widths=None):
+                 max_chunk_size: int = None,
+                 char_to_width: callable = None,
+                 line_widths: list = None):
         self.buffer = StringIO(buffer.read())  # to avoid tell() bytes bullshit
         self.max_chunk_size = max_chunk_size
         self.char_to_width = char_to_width
