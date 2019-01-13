@@ -1,7 +1,7 @@
 from unittest import TestCase
 from io import StringIO
 
-from chunker import Chunker
+from ..chunker import Chunker
 from .utils import unity
 
 

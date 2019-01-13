@@ -6,13 +6,18 @@ def readme():
         return f.read()
 
 
-setup(name='connect-iq-ebook',
-      version='0.2',
-      description='Tools for creating Garmin Connect IQ eBooks',
-      url='https://fascin.us/ebook',
-      author='Fascinus',
-      author_email='fascinus.team@gmail.com',
-      license='GPL3',
-      packages=['connect_iq_ebook'],
-      include_package_data=True,
-      zip_safe=False)
+setup(
+    author='Fascinus',
+    author_email='fascinus.team@gmail.com',
+    description='Tools for creating Garmin Connect IQ eBooks',
+    include_package_data=True,
+    license='GPL3',
+    long_description=readme(),
+    name='connect-iq-ebook',
+    packages=['connect_iq_ebook'],
+    test_suite='nose.collector',
+    tests_require=['nose'],
+    url='https://fascin.us/ebook',
+    version='0.2',
+    zip_safe=False,
+)

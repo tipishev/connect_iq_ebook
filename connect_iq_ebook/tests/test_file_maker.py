@@ -2,8 +2,8 @@ from unittest import skip  # noqa
 
 from unittest import TestCase
 
-from chunker import Chunker, FileMaker
-from devices import Fenix5  # , Fenix5S
+from ..chunker import Chunker, FileMaker
+from ..devices import Fenix5  # , Fenix5S
 
 from .utils import in_this_dir, unity
 
@@ -40,7 +40,7 @@ class FileMakerTest(TestCase):
             expected_mc = f.read()
         self.assertEqual(observed_mc, expected_mc)
 
-    #  @skip
+    @skip
     def test_write_files(self):
         #  self.file = open(in_this_dir('catch22_full.txt'), 'r')
         #  self.file = open(in_this_dir('tom_sawyer.txt'), 'r')
