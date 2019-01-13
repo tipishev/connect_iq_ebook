@@ -8,10 +8,24 @@ def make_ebook():
         description='Garmin Connect IQ eBook maker',
         epilog='Report bugs to fascinus.team@gmail.com',
     )
-    parser.add_argument('--input', help='path to input text')
-    parser.add_argument('--device', help='target device')
-
+    parser.add_argument('-i', '--input',
+                        metavar='book.txt', help='path to input text')
+    parser.add_argument('-d', '--device',
+                        metavar='fenix5', help='target device')
     args = parser.parse_args()
+
+    device_name = args.device
+
+    try:
+        device = getattr(devices, device_name)
+    except AttributeError:
+        print(f'Device {device_name} does not exist')
+        return
+
+    input_file_name = args.input
+    # TODO check for file existence
+
+
 
     print(f'Making you Garmin eBook with {args}')
     #  self.file = open(in_this_dir('catch22_full.txt'), 'r')
