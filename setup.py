@@ -15,6 +15,7 @@ setup(
     long_description=readme(),
     name='connect-iq-ebook',
     packages=['connect_iq_ebook'],
+    scripts=['bin/make-connect-iq-ebook'],
     test_suite='nose.collector',
     tests_require=['nose'],
     url='https://fascin.us/ebook',
