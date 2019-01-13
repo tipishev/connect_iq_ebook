@@ -17,7 +17,7 @@ class FileMaker:
         self.chunk_page_counts = None
         self.device = device
 
-    def make_xml(self):
+    def make_xml(self) -> str:
         resources = ET.Element('resources')
         self.chunk_page_counts = []
         for idx, (text, index) in enumerate(self.chunker):
@@ -27,7 +27,7 @@ class FileMaker:
                           id=f'Index{idx}').text = json.dumps(index)
         return parseString(ET.tostring(resources)).toprettyxml(indent='  ')
 
-    def make_mc(self):
+    def make_mc(self) -> str:
         assert self.device, 'please initialize device'
         assert self.chunk_page_counts, 'please generate XML first'
         with open(in_this_dir('template.mc')) as f:

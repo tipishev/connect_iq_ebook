@@ -19,7 +19,7 @@ class Chunker:
     def __iter__(self):
         return self.chunker
 
-    def get_line(self, max_width):
+    def get_line(self, max_line_px_width):
         assert self.char_to_width, 'please initialize char_to_width'
         line = ''
         line_px_width = 0
@@ -38,7 +38,7 @@ class Chunker:
             else:
                 char_px_width = self.char_to_width(new_char)
                 prospective_px_width = line_px_width + char_px_width
-                if prospective_px_width > max_width:
+                if prospective_px_width > max_line_px_width:
                     if last_break:
                         current_position = self.buffer.tell()
                         tail = current_position - last_break - 1
@@ -84,6 +84,7 @@ class Chunker:
             if idx == 0:  # first element is absolute offset
                 continue
             lines.append(buffer.read(line_width))
+        lines.append('---')
         page = '\n'.join(lines)
         print(page)
 
@@ -95,29 +96,28 @@ class Chunker:
             chunk_start = self.buffer.tell()
             chunk_text = ''
             chunk_index = []
-            chunk_bytes_size = 0
+            chunk_size_in_bytes = 0
 
             while True:  # collect pages for chunk
                 before_page = self.buffer.tell()
                 try:
                     page_text, page_index = next(self.pager)
-                    #  self.debug_print_page(page_text, page_index)
                 except StopIteration:
                     buffer_has_content = False
                     break
                 page_size_bytes = self.utf8_bytes_length(page_text)
-                prospective_bytes_size = chunk_bytes_size + page_size_bytes
+                prospective_bytes_size = chunk_size_in_bytes + page_size_bytes
                 if prospective_bytes_size > self.max_chunk_size:
                     self.buffer.seek(before_page)  # next chunk deals with it
                     break
                 else:
+                    #  self.debug_print_page(page_text, page_index)  # FIXME
                     chunk_text += page_text
-                    chunk_bytes_size = prospective_bytes_size
+                    chunk_size_in_bytes = prospective_bytes_size
                     chunk_index.append(page_index)
 
             if chunk_text:
                 for index in chunk_index:
                     index[0] -= chunk_start
                 yield chunk_text, chunk_index
-
         raise StopIteration()
