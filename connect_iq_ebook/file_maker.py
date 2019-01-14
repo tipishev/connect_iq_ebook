@@ -1,13 +1,8 @@
+from pkgutil import get_data
 from string import Template
+from xml.dom.minidom import parseString
 import json
 import xml.etree.ElementTree as ET
-from xml.dom.minidom import parseString
-from os import path
-
-
-def in_this_dir(filename):
-    this_dir = path.dirname(path.realpath(__file__))
-    return path.join(this_dir, filename)
 
 
 class FileMaker:
@@ -30,8 +25,7 @@ class FileMaker:
     def make_mc(self) -> str:
         assert self.device, 'please initialize device'
         assert self.chunk_page_counts, 'please generate XML first'
-        with open(in_this_dir('template.mc')) as f:
-            template = Template(f.read())
+        template = Template(get_data(__package__, 'template.mc').decode())
 
         current_page = 0
         chunk_records = []
