@@ -26,10 +26,7 @@ def make_ebook():
     # TODO check for file existence
 
 
-
     print(f'Making you Garmin eBook with {args}')
-    #  self.file = open(in_this_dir('catch22_full.txt'), 'r')
-    #  self.file = open(in_this_dir('tom_sawyer.txt'), 'r')
     #  self.file = open(in_this_dir('dracula.txt'), 'r')
     #  device = Fenix5x()
     #  chunker = Chunker(self.file,
