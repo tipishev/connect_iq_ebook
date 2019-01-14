@@ -1,5 +1,8 @@
 class BaseDevice:
 
+    def __repr__(self):
+        return self.__class__.__name__.lower()
+
     def char_to_width(self, character: str) -> int:
         pass
 

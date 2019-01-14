@@ -19,12 +19,11 @@ def make_ebook():
     try:
         device = getattr(devices, device_name)
     except AttributeError:
-        print(f'Device {device_name} does not exist')
+        print(f'Device {device_name} not found, choose from {devices.__all__}')
         return
 
     input_file_name = args.input
     # TODO check for file existence
-
 
     print(f'Making you Garmin eBook with {args}')
     #  self.file = open(in_this_dir('dracula.txt'), 'r')
