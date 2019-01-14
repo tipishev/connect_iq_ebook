@@ -11,7 +11,7 @@ class Chunker:
                  max_chunk_size: int = None,
                  char_to_width: callable = None,
                  line_widths: list = None):
-        self.buffer = StringIO(buffer.read())  # to avoid tell() bytes bullshit
+        self.buffer = StringIO(buffer.read())
         self.max_chunk_size = max_chunk_size
         self.char_to_width = char_to_width
         self.line_widths = line_widths

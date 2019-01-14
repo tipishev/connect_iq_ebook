@@ -3,6 +3,8 @@ from .base import BaseDevice
 
 class Fenix5S(BaseDevice):
 
+    max_chunk_size = 8000  # arbitrary
+
     def char_to_width(self, char):
         return XTINY_WIDTHS.get(char, XTINY_FALLBACK)
 

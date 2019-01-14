@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from . import Chunker, FileMaker, devices
+from . import devices
 
 
 def make_ebook():
@@ -22,14 +22,7 @@ def make_ebook():
 
     try:
         with open(args.input, 'rt') as f:
-            chunker = Chunker(f,
-                              char_to_width=device.char_to_width,
-                              line_widths=device.line_widths,
-                              max_chunk_size=8000)  # TODO encapsulate
+            device.make_ebook(buffer=f)
     except FileNotFoundError as e:
         print(e)
         return
-
-    file_maker = FileMaker(chunker, device=device)
-
-    file_maker.write_files()
