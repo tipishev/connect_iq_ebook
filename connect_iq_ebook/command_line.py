@@ -7,11 +7,11 @@ dracula 1090
 /usr/lib/jvm/java-11-openjdk-amd64/bin/java
 -Dfile.encoding=UTF-8
 -Dapple.awt.UIElement=true
--jar /home/user/connectiq/connectiq-sdk-lin-3.0.7-2018-12-17-efeb3e3/bin/monkeybrains.jar
+-jar monkeybrains.jar
 -o /home/user/fascinus/ebook/bin/ebook.prg
 -w -y /home/user/connectiq/fascinus_connect_key
--d fenix5_sim
--s 3.0.0
+-d fenix5
+// -s 3.0.0
 -f /home/user/fascinus/ebook/monkey.jungle
 '''
 
