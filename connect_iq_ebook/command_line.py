@@ -1,3 +1,4 @@
+from sys import stderr
 from argparse import ArgumentParser
 from . import devices
 
@@ -15,6 +16,11 @@ dracula 1090
 -f /home/user/fascinus/ebook/monkey.jungle
 '''
 
+
+def err(*args, **kwargs):
+    print(*args, file=stderr, **kwargs)
+
+
 def make_ebook():
     parser = ArgumentParser(
         description='Garmin Connect IQ eBook maker',
@@ -26,11 +32,11 @@ def make_ebook():
                         metavar='book.txt', help='path to input text')
     args = parser.parse_args()
 
-    device_name = args.device, args.input
+    device_name = args.device
     try:
         device = getattr(devices, device_name)
     except AttributeError:
-        print(f'device {device_name} not found, choose from {devices.__all__}')
+        err(f'device {device_name} not found, choose from {devices.__all__}')
         return
 
     input_filename = args.input
@@ -38,5 +44,5 @@ def make_ebook():
         with open(input_filename, 'rt') as f:
             device.make_ebook(buffer=f)
     except FileNotFoundError as e:
-        print(e)
+        err(e)
         return

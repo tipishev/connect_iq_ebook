@@ -25,7 +25,8 @@ class FileMaker:
     def make_mc(self) -> str:
         assert self.device, 'please initialize device'
         assert self.chunk_page_counts, 'please generate XML first'
-        template = Template(get_data(__package__, 'template.mc').decode())
+        template = Template(get_data(__package__,
+                                     'connect_iq/template.mc').decode())
 
         current_page = 0
         chunk_records = []
