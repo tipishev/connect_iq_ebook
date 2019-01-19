@@ -22,7 +22,6 @@ class BaseDevice:
             line_widths=self.line_widths,
         )
         resource_maker = ResourceMaker(chunker, self)
-        resource_maker.write_files()
 
     @property
     def lines_geometry(self):

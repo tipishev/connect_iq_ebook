@@ -46,10 +46,3 @@ class ResourceMaker:
         }
         rendered = template.substitute(context)
         return rendered
-
-    def write_files(self,
-                    xml_filename='book.xml', mc_filename='chunks_index.mc'):
-        with open(xml_filename, 'w') as f:
-            f.write(self.make_xml())
-        with open(mc_filename, 'w') as f:
-            f.write(self.make_mc())
