@@ -1,4 +1,4 @@
-from .. import Chunker, FileMaker
+from .. import Chunker, ResourceMaker
 
 
 class BaseDevice:
@@ -21,8 +21,8 @@ class BaseDevice:
             char_to_width=self.char_to_width,
             line_widths=self.line_widths,
         )
-        file_maker = FileMaker(chunker, self)
-        file_maker.write_files()
+        resource_maker = ResourceMaker(chunker, self)
+        resource_maker.write_files()
 
     @property
     def lines_geometry(self):

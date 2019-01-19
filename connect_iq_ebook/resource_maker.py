@@ -5,7 +5,7 @@ import json
 import xml.etree.ElementTree as ET
 
 
-class FileMaker:
+class ResourceMaker:
 
     def __init__(self, chunker, device=None):
         self.chunker = chunker
