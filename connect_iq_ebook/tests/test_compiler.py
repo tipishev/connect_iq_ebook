@@ -1,4 +1,5 @@
 import os
+from os.path import join
 from io import StringIO
 from tempfile import TemporaryDirectory
 from unittest import TestCase
@@ -18,6 +19,14 @@ class CompilerTest(TestCase):
         )
 
     def test_copy_source(self):
-        with TemporaryDirectory() as tmpdir:
-            self.compiler.copy_source(tmpdir)
-            self.assertIn('monkey.jungle', os.listdir(tmpdir))
+        with TemporaryDirectory() as workspace:
+            self.compiler.copy_source(workspace)
+            self.assertIn('monkey.jungle', os.listdir(workspace))
+
+    def test_write_app_name(self):
+        with TemporaryDirectory() as workspace:
+            self.compiler.copy_source(workspace)
+            self.compiler.write_app_name(workspace, 'Mary and Lamb')
+            with open(join(workspace, 'resources', 'resources.xml')) as f:
+                self.assertIn('<string id="AppName">Mary and Lamb</string>',
+                              f.read())

@@ -11,15 +11,15 @@ class Compiler:
     def __init__(self, source_buffer, devices, output_filename):
         self.devices = devices
 
-    def copy_source(self, tmpdir):
-        return copy_tree(EBOOK_SOURCE_LOCATION, tmpdir)
+    def copy_source(self, workspace):
+        return copy_tree(EBOOK_SOURCE_LOCATION, workspace)
 
-    def write_app_name(self, app_name):
-        common_resources = join(self.workspace, 'resources', 'resources.xml')
+    def write_app_name(self, workspace, app_name):
+        common_resources = join(workspace, 'resources', 'resources.xml')
         with open(common_resources, 'r') as f:
             before_text = f.read()
         with open(common_resources, 'w') as f:
-            after_text = before_text.replace('Tom Sawyer', self.book_name)
+            after_text = before_text.replace('Tom Sawyer', app_name)
             f.write(after_text)
 
     def write_xml(self):
