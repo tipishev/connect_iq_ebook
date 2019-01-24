@@ -11,9 +11,6 @@ class BaseDevice:
     def char_to_width(self, character: str) -> int:
         raise NotImplementedError
 
-    def __init__(self):
-        super().__init__()
-
     def make_ebook(self, buffer):  # TODO make customizable
         chunker = Chunker(
             buffer,
