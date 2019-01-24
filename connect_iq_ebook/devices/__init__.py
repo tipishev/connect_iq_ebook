@@ -2,6 +2,7 @@ from .fenix5 import Fenix5
 from .fenix5s import Fenix5S
 
 # convention: names should match ebook/manifest.xml
+# TODO singleton devices
 fenix5 = Fenix5()
 fenix5s = Fenix5S()
 

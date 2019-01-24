@@ -30,7 +30,8 @@ class Chunker:
             position_before_new_character = self.buffer.tell()
 
             new_char = self.buffer.read(1)
-            if not new_char:
+            is_end_of_line = not new_char
+            if is_end_of_line:
                 is_line_ready = True
             elif new_char == '\n':
                 line += new_char
@@ -38,22 +39,22 @@ class Chunker:
             else:
                 char_px_width = self.char_to_width(new_char)
                 prospective_px_width = line_px_width + char_px_width
-                if prospective_px_width > max_line_px_width:
-                    if last_break:
-                        current_position = self.buffer.tell()
-                        tail = current_position - last_break - 1
-                        if tail:
-                            line = line[:-tail]
-                        self.buffer.seek(last_break)
-                    else:
-                        self.buffer.seek(position_before_new_character)
-                    is_line_ready = True
-                else:
+                if prospective_px_width <= max_line_px_width:
                     line += new_char
                     line_px_width = prospective_px_width
 
                     if new_char in (' ', '—', '-'):
                         last_break = self.buffer.tell()
+                else:  # doesn't fit
+                    if last_break:
+                        current_position = self.buffer.tell()
+                        overflow = current_position - last_break - 1
+                        if overflow:
+                            line = line[:-overflow]
+                        self.buffer.seek(last_break)
+                    else:
+                        self.buffer.seek(position_before_new_character)
+                    is_line_ready = True
         return line
 
     @property

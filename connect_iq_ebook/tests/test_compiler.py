@@ -1,18 +1,23 @@
-from unittest import TestCase
+import os
 from io import StringIO
+from tempfile import TemporaryDirectory
+from unittest import TestCase
 
 from .. import Compiler
+from ..devices import fenix5
 
 
 class CompilerTest(TestCase):
 
     def setUp(self):
+        source_buffer = StringIO('Mary had a little lamb')
         self.compiler = Compiler(
-            book_name='Dracula',
-            family_qualifier='round-240x240',
-            xml_buffer=StringIO('hello'),
-            mc_buffer=StringIO('world'),
+            source_buffer,
+            devices=[fenix5],
+            output_filename='mary.prg',
         )
 
     def test_copy_source(self):
-        self.compiler.compile()
+        with TemporaryDirectory() as tmpdir:
+            self.compiler.copy_source(tmpdir)
+            self.assertIn('monkey.jungle', os.listdir(tmpdir))
