@@ -18,6 +18,10 @@ class CompilerTest(TestCase):
             output_filename='mary.prg',
         )
 
+    def assertInFile(self, filename, string):
+        with open(filename) as f:
+            self.assertIn(string, f.read())
+
     def test_copy_source(self):
         with TemporaryDirectory() as workspace:
             self.compiler.copy_source(workspace)
@@ -26,7 +30,7 @@ class CompilerTest(TestCase):
     def test_write_app_name(self):
         with TemporaryDirectory() as workspace:
             self.compiler.copy_source(workspace)
+            common_resources = join(workspace, 'resources', 'resources.xml')
+            self.assertInFile(common_resources, 'AppName">Tom Sawyer')
             self.compiler.write_app_name(workspace, 'Mary and Lamb')
-            with open(join(workspace, 'resources', 'resources.xml')) as f:
-                self.assertIn('<string id="AppName">Mary and Lamb</string>',
-                              f.read())
+            self.assertInFile(common_resources, '"AppName">Mary and Lamb')
