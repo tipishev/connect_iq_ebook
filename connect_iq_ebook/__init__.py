@@ -4,7 +4,6 @@ from .compiler import Compiler
 from . import devices
 
 __all__ = [
-    '',
     'Chunker',
     'Compiler',
     'ResourceMaker',
