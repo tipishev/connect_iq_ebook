@@ -35,6 +35,8 @@ class CompilerTest(TestCase):
             self.compiler.write_app_name(workspace, 'Mary and Lamb')
             self.assertInFile(common_resources, '"AppName">Mary and Lamb')
 
+    # TODO patch make_resources to return short strings
     def test_write_resources(self):
         source_buffer = StringIO('Mary had a little lamb')
         fenix5.make_resources(source_buffer)
+        raise NotImplementedError('check that overriden files are written')
