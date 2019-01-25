@@ -3,6 +3,7 @@ from os.path import join
 from io import StringIO
 from tempfile import TemporaryDirectory
 from unittest import TestCase
+from unittest.mock import patch, Mock
 
 from .. import Compiler
 from ..devices import fenix5
@@ -35,8 +36,22 @@ class CompilerTest(TestCase):
             self.compiler.write_app_name(workspace, 'Mary and Lamb')
             self.assertInFile(common_resources, '"AppName">Mary and Lamb')
 
-    # TODO patch make_resources to return short strings
-    def test_write_resources(self):
-        source_buffer = StringIO('Mary had a little lamb')
-        fenix5.make_resources(source_buffer)
-        raise NotImplementedError('check that overriden files are written')
+    @patch('connect_iq_ebook.devices.base.BaseDevice.make_resources')
+    def test_write_resources(self, mock_make_resources):
+        mock_resources = Mock()
+        mock_resources.xml = 'xml content'
+        mock_resources.mc = 'mc content'
+        mock_make_resources.return_value = mock_resources
+        with TemporaryDirectory() as workspace:
+            self.compiler.copy_source(workspace)
+            self.compiler.write_resources(workspace)
+
+            xml_path = join(workspace,
+                            f'resources-{fenix5.family_qualifier}',
+                            'resources.xml')
+            self.assertInFile(xml_path, 'xml content')
+
+            mc_path = join(workspace,
+                           f'source-{fenix5.family_qualifier}',
+                           'chunks_index.mc')
+            self.assertInFile(mc_path, 'mc content')

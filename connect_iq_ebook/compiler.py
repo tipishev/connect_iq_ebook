@@ -13,6 +13,8 @@ class Compiler:
     # TODO pass image here?
     def __init__(self, source_buffer, devices, output_filename):
         self.devices = devices
+        self.source_buffer = source_buffer
+        # TODO encapsulate temporary workspace
 
     def copy_source(self, workspace):
         return copy_tree(EBOOK_SOURCE_LOCATION, workspace)
@@ -22,19 +24,19 @@ class Compiler:
         for line in fileinput.input(resources_xml, inplace=True):
             print(line.replace('Tom Sawyer', app_name))
 
-    def write_xml(self):
-        filename = join(self.workspace,
-                        f'resources-{self.family_qualifier}',
-                        'book.xml')
-        with open(filename, 'wt') as f:
-            f.write(self.xml_buffer.read())
-
-    def write_mc(self):
-        filename = join(self.workspace,
-                        f'source-{self.family_qualifier}',
-                        'chunks_index.mc')
-        with open(filename, 'wt') as f:
-            f.write(self.mc_buffer.read())
+    def write_resources(self, workspace):
+        # TODO use functools.tee to create multiple buffers
+        assert len(self.devices) == 1, 'multiple devices are not implemented'
+        device, = self.devices
+        resources = device.make_resources(self.source_buffer)
+        xml_path = join(
+            workspace, f'resources-{device.family_qualifier}', 'resources.xml')
+        with open(xml_path, 'w') as f:
+            f.write(resources.xml)
+        mc_path = join(
+            workspace, f'source-{device.family_qualifier}', 'chunks_index.mc')
+        with open(mc_path, 'w') as f:
+            f.write(resources.mc)
 
     def generate_prg(self, prg_name='ebook.prg'):
         call([
