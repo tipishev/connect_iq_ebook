@@ -1,7 +1,8 @@
+import fileinput
 from os.path import join
 from subprocess import call
 from distutils.dir_util import copy_tree
-from tempfile import TemporaryDirectory
+#  from tempfile import TemporaryDirectory
 
 EBOOK_SOURCE_LOCATION = 'connect_iq_ebook/connect_iq/ebook'
 
@@ -17,12 +18,9 @@ class Compiler:
         return copy_tree(EBOOK_SOURCE_LOCATION, workspace)
 
     def write_app_name(self, workspace, app_name):
-        common_resources = join(workspace, 'resources', 'resources.xml')
-        with open(common_resources, 'r') as f:
-            before_text = f.read()
-        with open(common_resources, 'w') as f:
-            after_text = before_text.replace('Tom Sawyer', app_name)
-            f.write(after_text)
+        resources_xml = join(workspace, 'resources', 'resources.xml')
+        for line in fileinput.input(resources_xml, inplace=True):
+            print(line.replace('Tom Sawyer', app_name))
 
     def write_xml(self):
         filename = join(self.workspace,
