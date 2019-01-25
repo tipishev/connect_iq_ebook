@@ -7,7 +7,9 @@ EBOOK_SOURCE_LOCATION = 'connect_iq_ebook/connect_iq/ebook'
 
 
 class Compiler:
+    ''' responsible for making a PRG file from input text buffer '''
 
+    # TODO pass image here?
     def __init__(self, source_buffer, devices, output_filename):
         self.devices = devices
 

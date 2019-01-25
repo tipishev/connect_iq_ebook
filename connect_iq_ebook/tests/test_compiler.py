@@ -34,3 +34,7 @@ class CompilerTest(TestCase):
             self.assertInFile(common_resources, 'AppName">Tom Sawyer')
             self.compiler.write_app_name(workspace, 'Mary and Lamb')
             self.assertInFile(common_resources, '"AppName">Mary and Lamb')
+
+    def test_write_resources(self):
+        source_buffer = StringIO('Mary had a little lamb')
+        fenix5.make_resources(source_buffer)

@@ -1,8 +1,8 @@
+import json
+import xml.etree.ElementTree as ET
 from pkgutil import get_data
 from string import Template
 from xml.dom.minidom import parseString
-import json
-import xml.etree.ElementTree as ET
 
 
 class ResourceMaker:

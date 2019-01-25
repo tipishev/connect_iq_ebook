@@ -1,4 +1,7 @@
+from collections import namedtuple
 from .. import Chunker, ResourceMaker
+
+Resources = namedtuple('Resources', ['xml', 'mc'])
 
 
 class BaseDevice:
@@ -11,7 +14,10 @@ class BaseDevice:
     def char_to_width(self, character: str) -> int:
         raise NotImplementedError
 
-    def make_ebook(self, buffer):  # TODO make customizable
+    def __init__(self):
+        super().__init__()
+
+    def make_resources(self, buffer):  # TODO make customizable
         chunker = Chunker(
             buffer,
             max_chunk_size=self.max_chunk_size,
@@ -19,6 +25,8 @@ class BaseDevice:
             line_widths=self.line_widths,
         )
         resource_maker = ResourceMaker(chunker, self)
+        return Resources(xml=resource_maker.make_xml(),
+                         mc=resource_maker.make_mc())
 
     @property
     def lines_geometry(self):
