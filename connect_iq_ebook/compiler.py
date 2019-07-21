@@ -17,11 +17,12 @@ class Compiler:
     ''' responsible for making a PRG file from input text buffer '''
 
     # TODO pass app icon here?
-    def __init__(self, app_name, source_buffer, devices, output_filename):
+    def __init__(self, app_name, source_buffer, devices):
         self.app_name = app_name
-        self.devices = devices
-        self.output_filename = output_filename
         self.source_buffer = source_buffer
+        self.devices = devices
+
+        # where the java-shit madness happens
         self.workspace = TemporaryDirectory()
 
     def copy_source(self):
@@ -65,7 +66,7 @@ class Compiler:
         with open(output_path, 'rb') as f:
             return BytesIO(f.read())
 
-    def compile(self, output_filename='ebook.prg'):
+    def compile(self, output_filename):
         self.copy_source()
         self.write_app_name()
         self.write_resources()

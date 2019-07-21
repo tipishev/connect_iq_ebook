@@ -15,7 +15,6 @@ class CompilerTest(TestCase):
         self.compiler = Compiler(
             app_name='Mary and Lamb',
             devices=[fenix5],
-            output_filename='mary.prg',
             source_buffer=StringIO('Mary had a little lamb'),
         )
 

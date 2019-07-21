@@ -29,7 +29,7 @@ class BaseDevice:
                          mc=resource_maker.make_mc())
 
     def make_ebook(self, buffer):
-        raise NotImplementedError()
+        raise NotImplementedError('And it should not be, use Compiler')
 
     @property
     def lines_geometry(self):

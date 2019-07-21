@@ -1,7 +1,8 @@
 TESTS_PATH="connect_iq_ebook.tests"
+# TODO have all path settings in settings.py
 INPUT_TEXT_PATH="connect_iq_ebook/tests/catch22.txt"
 CONNECTIQ_BIN_DIR="/home/user/connectiq/connectiq-sdk-lin-3.0.11-2019-4-30-cd45859/bin"
-PRG_PATH="/home/user/fascinus/app/mary.prg"
+PRG_PATH="/home/user/fascinus/app/news.prg"
 DEVICE_ID="fenix5"
 
 test:
