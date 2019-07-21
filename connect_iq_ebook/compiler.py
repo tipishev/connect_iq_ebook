@@ -3,6 +3,7 @@ from os.path import join
 from subprocess import call
 from distutils.dir_util import copy_tree
 from tempfile import TemporaryDirectory
+from io import BytesIO
 
 from .settings import (
     JAVA_8_PATH,
@@ -36,7 +37,6 @@ class Compiler:
         assert len(self.devices) == 1, 'multiple devices are not implemented'
         device, = self.devices
         resources = device.make_resources(self.source_buffer)
-        # TODO deduplicate path prefix for XML and MC
         xml_path = join(
             self.workspace.name, f'resources-{device.family_qualifier}',
             'resources.xml')
@@ -48,25 +48,27 @@ class Compiler:
         with open(mc_path, 'w') as f:
             f.write(resources.mc)
 
-    def generate_prg(self):
+    def generate_prg_buffer(self):
         assert len(self.devices) == 1, 'multiple devices are not implemented'
         device, = self.devices
-        # FIXME remove absolute paths
+        output_path = join(self.workspace.name, 'output.prg')
         call([
             JAVA_8_PATH,
-            '-jar', f'{CONNECT_IQ_BIN_DIR}/monkeybrains.jar',
-            '-o', self.output_filename,
+            '-jar', join(CONNECT_IQ_BIN_DIR, 'monkeybrains.jar'),
+            '-o', output_path,
             #  '-w',  # show warnings
-            # TODO move path to key to settings.py
             '-y', CONNECT_IQ_DEVELOPER_KEY,
             '-d', str(device),
             '-f',  join(self.workspace.name, 'monkey.jungle'),
         ])
 
-    #  def compile(self, output_filename='ebook.prg'):
-    #      with TemporaryDirectory() as tmpdir:
-    #          self.workspace = self.copy_source(tmpdir)
-    #          self.write_app_name(self.book_name)
-    #          self.write_xml()
-    #          self.write_mc()
-    #          self.generate_prg(output_filename)
+        with open(output_path, 'rb') as f:
+            return BytesIO(f.read())
+
+    def compile(self, output_filename='ebook.prg'):
+        self.copy_source()
+        self.write_app_name()
+        self.write_resources()
+        with open(output_filename, 'wb') as f:
+            prg_buffer = self.generate_prg_buffer()
+            f.write(prg_buffer.read())

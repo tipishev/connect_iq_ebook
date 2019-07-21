@@ -1,9 +1,9 @@
 import os
 from os.path import join
 from io import StringIO
-from tempfile import TemporaryDirectory
 from unittest import TestCase
 from unittest.mock import patch, Mock
+from tempfile import NamedTemporaryFile
 
 from .. import Compiler
 from ..devices import fenix5
@@ -62,8 +62,13 @@ class CompilerTest(TestCase):
                        'chunks_index.mc')
         self.assertInFile(mc_path, 'mc content')
 
-    def test_generate_prg(self):
+    def test_generate_prg_buffer(self):
         self.compiler.copy_source()
         self.compiler.write_app_name()
         self.compiler.write_resources()
-        self.compiler.generate_prg()
+        prg_buffer = self.compiler.generate_prg_buffer()
+        self.assertTrue(prg_buffer.readable())
+
+    def test_compile(self):
+        temporary_file = NamedTemporaryFile()
+        self.compiler.compile(output_filename=temporary_file.name)
