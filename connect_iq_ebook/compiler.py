@@ -4,13 +4,17 @@ from subprocess import call
 from distutils.dir_util import copy_tree
 #  from tempfile import TemporaryDirectory
 
-EBOOK_SOURCE_LOCATION = 'connect_iq_ebook/connect_iq/ebook'
+from .settings import (
+    JAVA_8_PATH,
+    CONNECT_IQ_BIN_DIR,
+    EBOOK_SOURCE_LOCATION,
+)
 
 
 class Compiler:
     ''' responsible for making a PRG file from input text buffer '''
 
-    # TODO pass image here?
+    # TODO pass app icon here?
     def __init__(self, source_buffer, devices, output_filename):
         self.devices = devices
         self.source_buffer = source_buffer
@@ -44,8 +48,8 @@ class Compiler:
         device, = self.devices
         # FIXME remove absolute paths
         call([
-            'java',  # NOTE must be java8
-            '-jar', '/home/user/fascinus/app/connect_iq_ebook/connect_iq/monkeybrains.jar',
+            JAVA_8_PATH,
+            '-jar', f'{CONNECT_IQ_BIN_DIR}/monkeybrains.jar',
             '-o', self.output_filename,
             #  '-w',  # show warnings
             '-y', '/home/user/connectiq/fascinus_connect_key',
