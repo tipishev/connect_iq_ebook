@@ -14,6 +14,7 @@ class Compiler:
     def __init__(self, source_buffer, devices, output_filename):
         self.devices = devices
         self.source_buffer = source_buffer
+        self.output_filename = output_filename
         # TODO encapsulate temporary workspace
 
     def copy_source(self, workspace):
@@ -38,13 +39,13 @@ class Compiler:
         with open(mc_path, 'w') as f:
             f.write(resources.mc)
 
-    def generate_prg(self, prg_name='ebook.prg'):
+    def generate_prg(self, workspace):
         call([
             'java',
             '-Dfile.encoding=UTF-8',
             '-Dapple.awt.UIElement=true',
             '-jar', './connect_iq/monkeybrains.jar',
-            '-o', prg_name,
+            '-o', self.output_filename,
             '-w', '-y', '/home/user/connectiq/fascinus_connect_key',
             '-d', self.device,
             '-f',  join(self.workspace, 'monkey.jungle'),
