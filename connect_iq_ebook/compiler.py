@@ -43,14 +43,11 @@ class Compiler:
         assert len(self.devices) == 1, 'multiple devices are not implemented'
         device, = self.devices
         # FIXME remove absolute paths
-        # TODO remove unnecessary CLI options
         call([
             'java',  # NOTE must be java8
-            '-Dfile.encoding=UTF-8',
-            '-Dapple.awt.UIElement=true',
             '-jar', '/home/user/fascinus/app/connect_iq_ebook/connect_iq/monkeybrains.jar',
             '-o', self.output_filename,
-            '-w',
+            #  '-w',  # show warnings
             '-y', '/home/user/connectiq/fascinus_connect_key',
             '-d', str(device),
             '-f',  join(workspace, 'monkey.jungle'),
