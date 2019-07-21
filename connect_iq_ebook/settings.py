@@ -6,3 +6,4 @@ CONNECT_IQ_BIN_DIR = (
 )
 
 EBOOK_SOURCE_LOCATION = 'connect_iq_ebook/connect_iq/ebook'
+CONNECT_IQ_DEVELOPER_KEY = '/home/user/connectiq/fascinus_connect_key'

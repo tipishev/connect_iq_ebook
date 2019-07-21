@@ -7,6 +7,7 @@ from tempfile import TemporaryDirectory
 from .settings import (
     JAVA_8_PATH,
     CONNECT_IQ_BIN_DIR,
+    CONNECT_IQ_DEVELOPER_KEY,
     EBOOK_SOURCE_LOCATION,
 )
 
@@ -57,7 +58,7 @@ class Compiler:
             '-o', self.output_filename,
             #  '-w',  # show warnings
             # TODO move path to key to settings.py
-            '-y', '/home/user/connectiq/fascinus_connect_key',
+            '-y', CONNECT_IQ_DEVELOPER_KEY,
             '-d', str(device),
             '-f',  join(self.workspace.name, 'monkey.jungle'),
         ])
