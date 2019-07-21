@@ -40,15 +40,20 @@ class Compiler:
             f.write(resources.mc)
 
     def generate_prg(self, workspace):
+        assert len(self.devices) == 1, 'multiple devices are not implemented'
+        device, = self.devices
+        # FIXME remove absolute paths
+        # TODO remove unnecessary CLI options
         call([
-            'java',
+            'java',  # NOTE must be java8
             '-Dfile.encoding=UTF-8',
             '-Dapple.awt.UIElement=true',
-            '-jar', './connect_iq/monkeybrains.jar',
+            '-jar', '/home/user/fascinus/app/connect_iq_ebook/connect_iq/monkeybrains.jar',
             '-o', self.output_filename,
-            '-w', '-y', '/home/user/connectiq/fascinus_connect_key',
-            '-d', self.device,
-            '-f',  join(self.workspace, 'monkey.jungle'),
+            '-w',
+            '-y', '/home/user/connectiq/fascinus_connect_key',
+            '-d', str(device),
+            '-f',  join(workspace, 'monkey.jungle'),
         ])
 
     #  def compile(self, output_filename='ebook.prg'):

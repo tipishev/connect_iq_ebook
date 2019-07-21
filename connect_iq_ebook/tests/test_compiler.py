@@ -19,9 +19,13 @@ class CompilerTest(TestCase):
             output_filename='mary.prg',
         )
 
+    # Helpers
+
     def assertInFile(self, filename, string):
         with open(filename) as f:
             self.assertIn(string, f.read())
+
+    # Tests
 
     def test_copy_source(self):
         with TemporaryDirectory() as workspace:
@@ -55,3 +59,10 @@ class CompilerTest(TestCase):
                            f'source-{fenix5.family_qualifier}',
                            'chunks_index.mc')
             self.assertInFile(mc_path, 'mc content')
+
+    def test_generate_prg(self):
+        with TemporaryDirectory() as workspace:
+            self.compiler.copy_source(workspace)
+            self.compiler.write_app_name(workspace, 'Mary and Lamb')
+            self.compiler.write_resources(workspace)
+            self.compiler.generate_prg(workspace)
