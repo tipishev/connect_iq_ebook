@@ -28,6 +28,9 @@ class BaseDevice:
         return Resources(xml=resource_maker.make_xml(),
                          mc=resource_maker.make_mc())
 
+    def make_ebook(self, buffer):
+        pass
+
     @property
     def lines_geometry(self):
         raise NotImplementedError

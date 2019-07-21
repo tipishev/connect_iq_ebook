@@ -8,7 +8,6 @@ screen shapes and sizes
 '''
 
 
-
 def get_width(y):
     return math.ceil(2*math.sqrt(2*y*r - y**2))
 

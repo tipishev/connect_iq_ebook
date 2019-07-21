@@ -46,3 +46,6 @@ def make_ebook():
     except FileNotFoundError as e:
         err(e)
         return
+    else:
+        with open('output.prg', 'w') as f:
+            f.write('awesome binary output goes here')
