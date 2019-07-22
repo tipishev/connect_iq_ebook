@@ -153,7 +153,7 @@ class PagerView extends Ui.View {
 
     // Human presentation
     function showHumanPosition() {
-      return format("$1$/$2$", [self.currentPageNumber + 1,
+      return format("$1$/$2$", [self.currentPageNumber + 1,  // because humans count from 1, not 0
                                 self.lastPageNumber + 1]);
     }
 
