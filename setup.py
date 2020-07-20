@@ -9,9 +9,12 @@ def readme():
 
 
 setup(
+    name='connect-iq-ebook',
+    version='0.3',
     author='Fascinus',
     author_email='fascinus.team@gmail.com',
     description='Tools for creating Garmin Connect IQ eBooks',
+    long_description=readme(),
     entry_points={
         'console_scripts': [
             'make-connect-iq-ebook=connect_iq_ebook.command_line:make_ebook',
@@ -19,12 +22,9 @@ setup(
     },
     include_package_data=True,
     license='GPL3',
-    long_description=readme(),
-    name='connect-iq-ebook',
     packages=['connect_iq_ebook'],
     test_suite='nose.collector',
     tests_require=['nose'],
     url='https://fascin.us/ebook',
-    version='0.2',
     zip_safe=False,
 )
