@@ -30,16 +30,18 @@ class Compiler:
 
     def write_app_name(self):
         resources_xml = join(self.workspace.name, 'resources', 'resources.xml')
+        # FIXME the file is missing
         for line in fileinput.input(resources_xml, inplace=True):
             print(line.replace('Tom Sawyer', self.app_name))  # TODO de-Tom
 
     def write_resources(self):
         # TODO use functools.tee to create multiple buffers
         assert len(self.devices) == 1, 'multiple devices are not implemented'
-        device, = self.devices
+        device = self.devices[0]
         resources = device.make_resources(self.source_buffer)
         xml_path = join(
-            self.workspace.name, f'resources-{device.family_qualifier}',
+            self.workspace.name,
+            f'resources-{device.family_qualifier}',
             'resources.xml')
         with open(xml_path, 'w') as f:
             f.write(resources.xml)
@@ -51,7 +53,7 @@ class Compiler:
 
     def generate_prg_buffer(self):
         assert len(self.devices) == 1, 'multiple devices are not implemented'
-        device, = self.devices
+        device = self.devices[0]
         output_path = join(self.workspace.name, 'output.prg')
         call([
             JAVA_8_PATH,
@@ -68,7 +70,8 @@ class Compiler:
 
     def compile(self, output_filename):
         self.copy_source()
-        self.write_app_name()
+        # FIXME write common resources.xml
+        #  self.write_app_name()
         self.write_resources()
         with open(output_filename, 'wb') as f:
             prg_buffer = self.generate_prg_buffer()

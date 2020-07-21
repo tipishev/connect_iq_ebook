@@ -30,7 +30,7 @@ def make_ebook():
 
     input_filename = args.input
     assert input_filename.endswith('.txt'), 'The input should be a .txt file'
-    app_name = input_filename[:-4]  # drop '.txt'
+    app_name = input_filename[:-len('.txt')]
 
     try:
         with open(input_filename, 'rt') as f:

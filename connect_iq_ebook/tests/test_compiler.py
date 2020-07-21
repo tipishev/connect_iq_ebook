@@ -34,7 +34,6 @@ class CompilerTest(TestCase):
     def test_write_app_name(self):
         workspace = self.compiler.workspace.name
         self.compiler.copy_source()
-        self.compiler.copy_source()
         common_resources = join(workspace, 'resources', 'resources.xml')
         self.assertInFile(common_resources, 'AppName">Tom Sawyer')
         self.compiler.write_app_name()
