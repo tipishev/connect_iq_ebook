@@ -1,6 +1,13 @@
 using Toybox.Application as App;
 using Toybox.Graphics as Gfx;
 using Toybox.WatchUi as Ui;
+using Toybox.Timer as Timer;
+using Toybox.Sensor as Sensor;
+
+const DEFAULT_SETTINGS = {
+  "colors" => "dark",
+  "shake_to_flip" => false,
+};
 
 class PagerView extends Ui.View {
 
@@ -13,12 +20,11 @@ class PagerView extends Ui.View {
 
       self.settings = App.getApp().getProperty("settings");
 
-      // provide some sane defaults
+      // TODO handle newly-appearing keys: check all necessary keys
+      // hint: check if `has` an appropriate keyword
+      // TODO settings manager
       if (self.settings == null) {
-        self.settings = {
-          "colors" => "dark",
-          "shake_to_flip" => false,
-        };
+        self.settings = DEFAULT_SETTINGS;
       }
 
 
@@ -52,7 +58,24 @@ class PagerView extends Ui.View {
       self._index = Ui.loadResource(chunk[3]);
     }
 
+    function timerCallback() {
+	    print("timer callback");
+      var sensorInfo = Sensor.getInfo();
+      if (sensorInfo has :accel && sensorInfo.accel != null) {
+	      var accel = sensorInfo.accel;
+	      var xAccel = accel[0];
+	      var yAccel = accel[1];
+	      var zAccel = accel[2];
+	      print("x: " + accel + ", y: " + yAccel, ", z: " + zAccel);
+    }
+    }
+
     function onLayout(dc) {
+
+      // TODO only on shake_to_flip
+      var _timer = new Timer.Timer();
+      _timer.start(method(:timerCallback), 100, true);
+
       View.onLayout(dc);
     }
 
@@ -163,7 +186,7 @@ class PagerView extends Ui.View {
     function openSettingsMenu() {
 
       var settingsMenuView = new Rez.Menus.SettingsMenu();
-      settingsMenuView.setTitle("Settings");
+      settingsMenuView.setTitle("Settings");  // TODO set in XML
 
       var shakeToFlipIndex = settingsMenuView.findItemById(:shake_to_flip);
       var shakeToFlipMenuItem = settingsMenuView.getItem(shakeToFlipIndex);
