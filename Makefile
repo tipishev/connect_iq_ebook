@@ -17,5 +17,12 @@ simulate:
 	$(CONNECTIQ_SDK_DIR)/bin/simulator &
 	$(CONNECTIQ_SDK_DIR)/bin/monkeydo $(PRG_NAME) $(DEVICE_ID)
 
+# TODO reuse 'make book' and 'make simulate' without copypaste
+reload:
+	killall simulator  || true
+	$(BIN)/make-connect-iq-ebook -d $(DEVICE_ID) -i $(INPUT_TEXT_PATH)
+	$(CONNECTIQ_SDK_DIR)/bin/simulator &
+	$(CONNECTIQ_SDK_DIR)/bin/monkeydo $(PRG_NAME) $(DEVICE_ID)
+
 load:
 	cp $(PRG_NAME) /media/user/GARMIN/GARMIN/APPS/
