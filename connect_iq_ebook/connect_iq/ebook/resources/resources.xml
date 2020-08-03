@@ -4,7 +4,7 @@
   <!-- Not used, added for consistency -->
   <bitmap id="BitcoinQr" filename="images/bitcoin_qr.png" />
   <!-- Strings -->
-  <string id="AppName">Tom Sawyer</string>
+  <string id="AppName">eBook</string>
   <string id="AboutVersion">eBook v1.0</string>
   <string id="WebPage">www.fascin.us</string>
   <string id="ScrollTeaser">secret option\nbelow...</string>

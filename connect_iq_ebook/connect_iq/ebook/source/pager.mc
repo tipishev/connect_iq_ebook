@@ -13,9 +13,11 @@ class PagerView extends Ui.View {
 
       self.settings = App.getApp().getProperty("settings");
 
+      // provide some sane defaults
       if (self.settings == null) {
         self.settings = {
           "colors" => "dark",
+          "shake_to_flip" => false,
         };
       }
 
@@ -161,6 +163,12 @@ class PagerView extends Ui.View {
     function openSettingsMenu() {
 
       var settingsMenuView = new Rez.Menus.SettingsMenu();
+      settingsMenuView.setTitle("Settings");
+
+      var shakeToFlipIndex = settingsMenuView.findItemById(:shake_to_flip);
+      var shakeToFlipMenuItem = settingsMenuView.getItem(shakeToFlipIndex);
+      shakeToFlipMenuItem.setEnabled(self.settings["shake_to_flip"]);
+
       var settingsDelegate = new SettingsMenuDelegate(self.settings);
 
       Ui.pushView(settingsMenuView, settingsDelegate, Ui.SLIDE_LEFT);

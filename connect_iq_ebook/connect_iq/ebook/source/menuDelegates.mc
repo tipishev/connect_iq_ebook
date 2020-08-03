@@ -36,8 +36,7 @@ class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
     }
 
     else if ( itemId == :shake_to_flip ) {
-      var shakeToFlipEnabled = item.isEnabled();
-      print(self._settings);
+      self._settings["shake_to_flip"] = item.isEnabled();
     }
 
   }
