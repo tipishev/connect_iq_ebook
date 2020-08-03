@@ -159,8 +159,10 @@ class PagerView extends Ui.View {
 
     // Settings
     function openSettingsMenu() {
+
       var settingsMenuView = new Rez.Menus.SettingsMenu();
       var settingsDelegate = new SettingsMenuDelegate(self.settings);
+
       Ui.pushView(settingsMenuView, settingsDelegate, Ui.SLIDE_LEFT);
     }
 

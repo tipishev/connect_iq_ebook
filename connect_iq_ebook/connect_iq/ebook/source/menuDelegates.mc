@@ -12,25 +12,36 @@ class ColorsMenuDelegate extends Ui.MenuInputDelegate {
   }
 }
 
-class SettingsMenuDelegate extends Ui.MenuInputDelegate {
+class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
   private var _settings;
+
   function initialize(settings) {
     MenuInputDelegate.initialize();
     self._settings = settings;
   }
 
-  function onMenuItem(item) {
-    if ( item == :settings_colors ) {
+  function onSelect(item) {
+
+    var itemId = item.getId();
+    if ( itemId == :settings_colors ) {
       var colorsMenuView = new Rez.Menus.ColorsMenu();
       var colorsMenuDelegate = new ColorsMenuDelegate(self._settings);
       Ui.pushView(colorsMenuView, colorsMenuDelegate, Ui.SLIDE_LEFT);
     }
-    else if ( item == :about ) {
+
+    else if ( itemId == :about ) {
       var aboutView = new AboutView();
       var aboutDelegate = new AboutDelegate(aboutView);
       Ui.pushView(aboutView, aboutDelegate, Ui.SLIDE_LEFT);
     }
+
+    else if ( itemId == :shake_to_flip ) {
+      var shakeToFlipEnabled = item.isEnabled();
+      print(self._settings);
+    }
+
   }
+
 }
 
 
