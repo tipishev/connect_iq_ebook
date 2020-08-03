@@ -1,8 +1,9 @@
 using Toybox.Application as App;
 using Toybox.Graphics as Gfx;
 using Toybox.WatchUi as Ui;
-using Toybox.Timer as Timer;
-using Toybox.Sensor as Sensor;
+using Toybox.Timer;
+using Toybox.Sensor;
+using Toybox.Math;
 
 const DEFAULT_SETTINGS = {
   "colors" => "dark",
@@ -58,23 +59,30 @@ class PagerView extends Ui.View {
       self._index = Ui.loadResource(chunk[3]);
     }
 
-    function timerCallback() {
-	    print("timer callback");
+    function shakeToFlipTimerCallback() {
+	    print("shake_to_flip timer callback");
       var sensorInfo = Sensor.getInfo();
       if (sensorInfo has :accel && sensorInfo.accel != null) {
 	      var accel = sensorInfo.accel;
 	      var xAccel = accel[0];
 	      var yAccel = accel[1];
 	      var zAccel = accel[2];
-	      print("x: " + accel + ", y: " + yAccel, ", z: " + zAccel);
-    }
+
+        // FIXME magic number to settings or configurable
+        if (Math.sqrt(xAccel * xAccel + yAccel * yAccel + zAccel * zAccel) > 1500) {
+          self.showNextPage();
+        }
+
+      }
     }
 
     function onLayout(dc) {
 
-      // TODO only on shake_to_flip
-      var _timer = new Timer.Timer();
-      _timer.start(method(:timerCallback), 100, true);
+    // FIXME enable/disable timer without restarting the app
+      if (self.settings["shake_to_flip"]) {
+        var _timer = new Timer.Timer();
+        _timer.start(method(:shakeToFlipTimerCallback), 100, true);
+      }
 
       View.onLayout(dc);
     }
@@ -230,11 +238,11 @@ class PagerDelegate extends Ui.BehaviorDelegate
     }
 
     function onNextPage() {
-      self._view.showNextPage();
+      self._view.openNavigationMenu();
     }
 
     function onSelect() {
-      self._view.openNavigationMenu();
+      self._view.showNextPage();
     }
 
     function onMenu() {
