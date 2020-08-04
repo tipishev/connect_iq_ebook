@@ -62,7 +62,6 @@ class PagerView extends Ui.View {
     }
 
     function shakeToFlipTimerCallback() {
-	    print("shake_to_flip timer callback");
       var sensorInfo = Sensor.getInfo();
       if (sensorInfo has :accel && sensorInfo.accel != null) {
 	      var accel = sensorInfo.accel;
@@ -135,7 +134,7 @@ class PagerView extends Ui.View {
         y = line_box[1];
         width = line_box[2];
         height = line_box[3];
-	dc.drawRectangle(x, y, width, height);
+	      dc.drawRectangle(x, y, width, height);
       }
     }
 
@@ -191,17 +190,11 @@ class PagerView extends Ui.View {
     }
 
     function applySettings() {
-
-      print("toggling shake to flip..");
       if (self.settings["shake_to_flip"]) {
-        print("..on");
         self._shake_to_flip_timer.start(method(:shakeToFlipTimerCallback), 100, true);
       } else {
-        print("..off");
         self._shake_to_flip_timer.stop();
       }
-
-      print("settings applied");
     }
 
     // Settings
