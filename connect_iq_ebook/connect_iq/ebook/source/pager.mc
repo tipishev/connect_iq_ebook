@@ -42,6 +42,7 @@ class PagerView extends Ui.View {
     // Chunks
     function _getChunkNumber(pageNumber) {
       var i, chunk, firstPage, stopPage;
+      // TODO binary search instead of linear scan
       for (i=0; i<CHUNKS.size(); i++) {
         chunk = CHUNKS[i];
         firstPage = chunk[0];
@@ -61,6 +62,7 @@ class PagerView extends Ui.View {
       self._index = Ui.loadResource(chunk[3]);
     }
 
+    // TODO move out
     function shakeToFlipTimerCallback() {
       var sensorInfo = Sensor.getInfo();
       if (sensorInfo has :accel && sensorInfo.accel != null) {
@@ -71,7 +73,7 @@ class PagerView extends Ui.View {
 
         // TODO debounce timer
         // TODO better shake detection
-        // FIXME magic number to settings or configurable
+        // TODO magic number to settings or configurable
         if (Math.sqrt(xAccel * xAccel + yAccel * yAccel + zAccel * zAccel) > 1250) {
           self.showNextPage();
         }
