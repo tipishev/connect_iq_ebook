@@ -5,6 +5,7 @@ using Toybox.Timer;
 using Toybox.Sensor;
 using Toybox.Math;
 
+// TODO settings manager/module
 const DEFAULT_SETTINGS = {
   "colors" => "dark",
   "shake_to_flip" => false,
@@ -13,7 +14,7 @@ const DEFAULT_SETTINGS = {
 class PagerView extends Ui.View {
 
     public var currentPageNumber, lastPageNumber;
-    private var _currentChunkNumber, _bigString, _index;
+    private var _currentChunkNumber, _bigString, _index, _shake_to_flip_timer;
     public var settings;
 
     function initialize() {
@@ -34,6 +35,8 @@ class PagerView extends Ui.View {
       self.currentPageNumber = self._loadCurrentPageNumber();
       self._currentChunkNumber = _getChunkNumber(self.currentPageNumber);
       self._setChunkVariables(self._currentChunkNumber);
+
+      self._shake_to_flip_timer = new Timer.Timer();
 
     }
 
@@ -76,15 +79,10 @@ class PagerView extends Ui.View {
       }
     }
 
+
     function onLayout(dc) {
-
-    // FIXME enable/disable timer without restarting the app
-      if (self.settings["shake_to_flip"]) {
-        var _timer = new Timer.Timer();
-        _timer.start(method(:shakeToFlipTimerCallback), 100, true);
-      }
-
       View.onLayout(dc);
+      self.applySettings();
     }
 
     // Persistent Storage
@@ -186,8 +184,23 @@ class PagerView extends Ui.View {
 
     // Human presentation
     function showHumanPosition() {
-      return format("$1$/$2$", [self.currentPageNumber + 1,  // because humans count from 1, not 0
+      // because humans count from 1, not 0
+      return format("$1$/$2$", [self.currentPageNumber + 1,
                                 self.lastPageNumber + 1]);
+    }
+
+    function applySettings() {
+
+      print("toggling shake to flip..");
+      if (self.settings["shake_to_flip"]) {
+        print("..on");
+        self._shake_to_flip_timer.start(method(:shakeToFlipTimerCallback), 100, true);
+      } else {
+        print("..off");
+        self._shake_to_flip_timer.stop();
+      }
+
+      print("settings applied");
     }
 
     // Settings
@@ -200,23 +213,29 @@ class PagerView extends Ui.View {
       var shakeToFlipMenuItem = settingsMenuView.getItem(shakeToFlipIndex);
       shakeToFlipMenuItem.setEnabled(self.settings["shake_to_flip"]);
 
-      var settingsDelegate = new SettingsMenuDelegate(self.settings);
+      var settingsDelegate = new SettingsMenuDelegate(self.settings,
+                                                      method(:applySettings));
 
       Ui.pushView(settingsMenuView, settingsDelegate, Ui.SLIDE_LEFT);
     }
 
     function onUpdate(dc) {
+
+      // TODO split reading settings and changing dc
+      print("setting colors");
       if (self.settings["colors"].equals("light")) {
         dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_WHITE);
       } else {
         dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
       }
+
       dc.clear();
       self.drawPage(dc, self.currentPageNumber);
       /* drawLineBoxes(dc); */
     }
 
     function onHide() {
+      // TODO settings manager
       App.getApp().setProperty("settings", self.settings);
     }
 }
@@ -241,6 +260,7 @@ class PagerDelegate extends Ui.BehaviorDelegate
       self._view.openNavigationMenu();
     }
 
+    // because this button is more sturdy on Fenix 5
     function onSelect() {
       self._view.showNextPage();
     }

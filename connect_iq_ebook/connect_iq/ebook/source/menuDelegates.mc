@@ -13,11 +13,12 @@ class ColorsMenuDelegate extends Ui.MenuInputDelegate {
 }
 
 class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
-  private var _settings;
+  private var _settings, _apply_settings_callback;
 
-  function initialize(settings) {
+  function initialize(settings, apply_settings_callback) {
     MenuInputDelegate.initialize();
     self._settings = settings;
+    self._apply_settings_callback = apply_settings_callback;
   }
 
   function onSelect(item) {
@@ -39,6 +40,11 @@ class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
       self._settings["shake_to_flip"] = item.isEnabled();
     }
 
+  }
+
+  function onBack() {
+    self._apply_settings_callback.invoke();
+    Menu2InputDelegate.onBack();
   }
 
 }
