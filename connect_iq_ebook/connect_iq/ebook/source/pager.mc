@@ -23,7 +23,6 @@ class PagerView extends Ui.View {
       self.settings = App.getApp().getProperty("settings");
 
       // TODO handle newly-appearing keys: check all necessary keys
-      // hint: check if `has` an appropriate keyword
       // TODO settings manager
       if (self.settings == null) {
         self.settings = DEFAULT_SETTINGS;
@@ -71,8 +70,10 @@ class PagerView extends Ui.View {
 	      var yAccel = accel[1];
 	      var zAccel = accel[2];
 
+        // TODO debounce timer
+        // TODO better shake detection
         // FIXME magic number to settings or configurable
-        if (Math.sqrt(xAccel * xAccel + yAccel * yAccel + zAccel * zAccel) > 1500) {
+        if (Math.sqrt(xAccel * xAccel + yAccel * yAccel + zAccel * zAccel) > 1250) {
           self.showNextPage();
         }
 
