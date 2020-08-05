@@ -14,7 +14,7 @@ const DEFAULT_SETTINGS = {
 class PagerView extends Ui.View {
 
     public var settings;
-    private var  _book, _shake_to_flip_timer;  // TODO camelcase
+    private var  _book, _shakeToFlipTimer;  // TODO camelcase
 
     function initialize() {
       View.initialize();
@@ -30,7 +30,7 @@ class PagerView extends Ui.View {
       /* = new TextBackends.RezTextBackend(CHUNKS); */
       self._book = new Book("Dummy", new TextBackends.DummyTextBackend());
 
-      self._shake_to_flip_timer = new Timer.Timer();
+      self._shakeToFlipTimer = new Timer.Timer();
 
     }
 
@@ -111,9 +111,9 @@ class PagerView extends Ui.View {
 
     function applySettings() {
       if (self.settings["shake_to_flip"]) {
-        self._shake_to_flip_timer.start(method(:shakeToFlipTimerCallback), 100, true);
+        self._shakeToFlipTimer.start(method(:shakeToFlipTimerCallback), 100, true);
       } else {
-        self._shake_to_flip_timer.stop();
+        self._shakeToFlipTimer.stop();
       }
     }
 
