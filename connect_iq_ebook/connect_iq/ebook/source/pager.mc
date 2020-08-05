@@ -27,7 +27,8 @@ class PagerView extends Ui.View {
         self.settings = DEFAULT_SETTINGS;
       }
 
-      self._text_backend = new TextBackends.DummyTextBackend();
+      /* self._text_backend = new TextBackends.DummyTextBackend(); */
+      self._text_backend = new TextBackends.RezTextBackend(CHUNKS);
 
 
       print(format("Last Page Number: $1$", [self._text_backend.getLastPageNumber()]));

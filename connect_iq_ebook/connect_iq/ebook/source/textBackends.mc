@@ -25,17 +25,21 @@ module TextBackends {
   }
 
   class RezTextBackend extends BaseTextBackend{
-    private var _chunks, _currentChunkNumber, _bigString, _index;
+    private var _chunks, _currentChunkNumber, _bigString, _index, _lastPageNumber;
     
     // public
 
     function initialize(chunks) {
       self._chunks = chunks;
+
+      // caching to variable
+      self._lastPageNumber = self._chunks[self._chunks.size() - 1][1] - 1;
+
       BaseTextBackend.initialize();
     }
 
     function getLastPageNumber() {
-      return self._chunks[self._chunks.size() - 1][1] - 1;
+      return self._lastPageNumber;
     }
 
     function getStrings(validPageNumber) {
@@ -46,7 +50,7 @@ module TextBackends {
         self._currentChunkNumber = chunkNumber;
         self._setChunkVariables(chunkNumber);
       }
-      firstPageInChunk = CHUNKS[self._currentChunkNumber][0];
+      firstPageInChunk = self._chunks[self._currentChunkNumber][0];
       pageNumberInChunk = validPageNumber - firstPageInChunk;
       pageIndex = self._index[pageNumberInChunk];
 
@@ -68,8 +72,8 @@ module TextBackends {
     function _getChunkNumber(pageNumber) {
       var i, chunk, firstPage, stopPage;
       // TODO binary search instead of linear scan
-      for (i=0; i<CHUNKS.size(); i++) {
-        chunk = CHUNKS[i];
+      for (i=0; i<self._chunks.size(); i++) {
+        chunk = self._chunks[i];
         firstPage = chunk[0];
         stopPage = chunk[1];
         if (pageNumber >= firstPage && pageNumber < stopPage) {
@@ -82,7 +86,7 @@ module TextBackends {
     function _setChunkVariables(chunkNumber) {
       self._bigString = null;
       self._index = null;
-      var chunk = CHUNKS[chunkNumber];
+      var chunk = self._chunks[chunkNumber];
       self._bigString = Ui.loadResource(chunk[2]);
       self._index = Ui.loadResource(chunk[3]);
     }
