@@ -14,7 +14,7 @@ const DEFAULT_SETTINGS = {
 class PagerView extends Ui.View {
 
     public var settings, currentPageNumber;
-    private var  _text_backend, _shake_to_flip_timer;
+    private var  _text_backend, _shake_to_flip_timer;  // TODO camelcase
 
     function initialize() {
       View.initialize();
