@@ -13,8 +13,8 @@ const DEFAULT_SETTINGS = {
 
 class PagerView extends Ui.View {
 
-    public var settings, currentPageNumber;
-    private var  _text_backend, _shake_to_flip_timer;  // TODO camelcase
+    public var settings;
+    private var  _book, _shake_to_flip_timer;  // TODO camelcase
 
     function initialize() {
       View.initialize();
@@ -27,12 +27,9 @@ class PagerView extends Ui.View {
         self.settings = DEFAULT_SETTINGS;
       }
 
-      /* self._text_backend = new TextBackends.DummyTextBackend(); */
-      self._text_backend = new TextBackends.RezTextBackend(CHUNKS);
+      /* = new TextBackends.RezTextBackend(CHUNKS); */
+      self._book = new Book("Dummy", new TextBackends.DummyTextBackend());
 
-
-      print(format("Last Page Number: $1$", [self._text_backend.getLastPageNumber()]));
-      self.currentPageNumber = self._loadCurrentPageNumber();
       self._shake_to_flip_timer = new Timer.Timer();
 
     }
@@ -59,23 +56,8 @@ class PagerView extends Ui.View {
 
     function onLayout(dc) {
       View.onLayout(dc);
-      self.applySettings();
+      self.applySettings(); // TODO move to initialize?
     }
-
-    // Persistent Storage
-    function _loadCurrentPageNumber() {
-      var currentPageNumber;
-      currentPageNumber = App.getApp().getProperty("currentPageNumber");
-      if ((currentPageNumber == null) || (currentPageNumber > self._text_backend.getLastPageNumber())) {
-        currentPageNumber = 0;
-      }
-      return currentPageNumber;
-    }
-
-    function _saveCurrentPageNumber(currentPageNumber) {
-        App.getApp().setProperty("currentPageNumber", currentPageNumber);
-    }
-
 
     // Graphics
     function drawLineBoxes(dc) {
@@ -101,44 +83,30 @@ class PagerView extends Ui.View {
       }
     }
 
-    function drawPage(dc, validPageNumber) {
-      self.drawStrings(dc, self._text_backend.getStrings(validPageNumber));
+    function drawPage(dc) {
+      self.drawStrings(dc, self._book.getStrings());
     }
 
     // Navigation
-    function goToPage(pageNumber) {
-      print("Going to page " + pageNumber);
-      if (pageNumber >= 0 && pageNumber <= self._text_backend.getLastPageNumber()) {
-          self.currentPageNumber = pageNumber;
-          Ui.requestUpdate();
-          self._saveCurrentPageNumber(self.currentPageNumber);
-      } else {
-        print(pageNumber + " is not in the book");
-      }
-    }
-
+    
     function showNextPage() {
-      self.goToPage(self.currentPageNumber + 1);
+      self._book.goToNextPage();
+      Ui.requestUpdate();
     }
 
     function showPreviousPage() {
-      self.goToPage(self.currentPageNumber - 1);
+      self._book.goToPreviousPage();
+      Ui.requestUpdate();
     }
+
 
     function openNavigationMenu() {
       var navigationMenuView = new Rez.Menus.NavigationMenu();
-      var title = self.showHumanPosition();
+      var title = self._book.showHumanPosition();
       navigationMenuView.setTitle(title);
 
       var navigationMenuDelegate = new NavigationMenuDelegate(self);
       Ui.pushView(navigationMenuView, navigationMenuDelegate, Ui.SLIDE_RIGHT);
-    }
-
-    // Human presentation
-    function showHumanPosition() {
-      // because humans count from 1, not 0
-      return format("$1$/$2$", [self.currentPageNumber + 1,
-                                self._text_backend.getLastPageNumber() + 1]);
     }
 
     function applySettings() {
@@ -176,7 +144,7 @@ class PagerView extends Ui.View {
       }
 
       dc.clear();
-      self.drawPage(dc, self.currentPageNumber);
+      self.drawPage(dc);
       /* drawLineBoxes(dc); */
     }
 
