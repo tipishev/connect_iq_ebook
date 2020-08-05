@@ -87,7 +87,7 @@ class PagePickerDelegate extends Ui.PickerDelegate {
             var preview = currentInput + the_value;
             if (!preview.equals("0")) {  // no leading zeroes
               var previewPageNumber = preview.toNumber();
-              var lastPageNumber = self._picker.view.lastPageNumber + 1;
+              var lastPageNumber = self._picker.view._text_backend.getLastPageNumber() + 1;
               if (previewPageNumber <= lastPageNumber) {
                 var showCursor = previewPageNumber * 10 < lastPageNumber;
                 self._picker.addCharacter(the_value, showCursor);

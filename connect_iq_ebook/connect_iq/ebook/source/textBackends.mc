@@ -1,22 +1,37 @@
-// TODO think about index providers, should they be included?
+using Toybox.WatchUi as Ui;
 
-module TextProviders {
+module TextBackends {
 
-  class BaseTextProvider {
+  class BaseTextBackend {
 
     function getLastPageNumber() { /* not implemented */ }
     function getStrings(validPageNumber) { /* not implemented */ }
 
   }
 
-  class ResourceTextProvider extends BaseTextProvider{
+  class DummyTextBackend extends BaseTextBackend {
+    private var _pages;
+
+    function initialize() {
+      self._pages = [
+        ["fo1", "ba1", "ba1", "q1", "qz1", "bar1", "oo1"],
+        ["fo2", "ba2", "ba2", "q2", "qz2", "bar2", "oo2"],
+        ["fo3", "ba3", "ba3", "q3", "qz3", "bar3", "oo3"],
+      ];
+      BaseTextBackend.initialize();
+    }
+    function getLastPageNumber() { return self._pages.size() - 1; }
+    function getStrings(validPageNumber) { return self._pages[validPageNumber]; }
+  }
+
+  class RezTextBackend extends BaseTextBackend{
     private var _chunks, _currentChunkNumber, _bigString, _index;
     
     // public
 
     function initialize(chunks) {
       self._chunks = chunks;
-      BaseTextProvider.initialize();
+      BaseTextBackend.initialize();
     }
 
     function getLastPageNumber() {
@@ -74,7 +89,7 @@ module TextProviders {
 
   }
 
-  class PersistentStorageTextProvider extends BaseTextProvider{
+  class PersistentStorageTextBackend extends BaseTextBackend{
 
   }
 

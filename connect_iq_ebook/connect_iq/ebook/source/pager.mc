@@ -13,9 +13,8 @@ const DEFAULT_SETTINGS = {
 
 class PagerView extends Ui.View {
 
-    public var currentPageNumber, lastPageNumber;
-    private var _currentChunkNumber, _bigString, _index, _shake_to_flip_timer;
-    public var settings;
+    public var settings, currentPageNumber;
+    private var  _text_backend, _shake_to_flip_timer;
 
     function initialize() {
       View.initialize();
@@ -28,38 +27,13 @@ class PagerView extends Ui.View {
         self.settings = DEFAULT_SETTINGS;
       }
 
+      self._text_backend = new TextBackends.DummyTextBackend();
 
-      self.lastPageNumber = CHUNKS[CHUNKS.size() - 1][1] - 1;
-      print(format("Last Page Number: $1$", [self.lastPageNumber]));
+
+      print(format("Last Page Number: $1$", [self._text_backend.getLastPageNumber()]));
       self.currentPageNumber = self._loadCurrentPageNumber();
-      self._currentChunkNumber = _getChunkNumber(self.currentPageNumber);
-      self._setChunkVariables(self._currentChunkNumber);
-
       self._shake_to_flip_timer = new Timer.Timer();
 
-    }
-
-    // Chunks
-    function _getChunkNumber(pageNumber) {
-      var i, chunk, firstPage, stopPage;
-      // TODO binary search instead of linear scan
-      for (i=0; i<CHUNKS.size(); i++) {
-        chunk = CHUNKS[i];
-        firstPage = chunk[0];
-        stopPage = chunk[1];
-        if (pageNumber >= firstPage && pageNumber < stopPage) {
-          return i;
-        }
-      }
-      return null;
-    }
-
-    function _setChunkVariables(chunkNumber) {
-      self._bigString = null;
-      self._index = null;
-      var chunk = CHUNKS[chunkNumber];
-      self._bigString = Ui.loadResource(chunk[2]);
-      self._index = Ui.loadResource(chunk[3]);
     }
 
     // TODO move out
@@ -91,7 +65,7 @@ class PagerView extends Ui.View {
     function _loadCurrentPageNumber() {
       var currentPageNumber;
       currentPageNumber = App.getApp().getProperty("currentPageNumber");
-      if ((currentPageNumber == null) || (currentPageNumber > self.lastPageNumber)) {
+      if ((currentPageNumber == null) || (currentPageNumber > self._text_backend.getLastPageNumber())) {
         currentPageNumber = 0;
       }
       return currentPageNumber;
@@ -101,31 +75,6 @@ class PagerView extends Ui.View {
         App.getApp().setProperty("currentPageNumber", currentPageNumber);
     }
 
-
-    // Text
-    function _getStrings(validPageNumber) {
-      var chunkNumber, firstPageInChunk, pageNumberInChunk, pageIndex;
-      chunkNumber = self._getChunkNumber(validPageNumber);
-
-      if (chunkNumber != self._currentChunkNumber) {  // flip the chunk
-        self._currentChunkNumber = chunkNumber;
-        self._setChunkVariables(chunkNumber);
-      }
-      firstPageInChunk = CHUNKS[self._currentChunkNumber][0];
-      pageNumberInChunk = validPageNumber - firstPageInChunk;
-      pageIndex = self._index[pageNumberInChunk];
-
-      var i, lineStart, lineEnd, result, string;
-      lineStart = pageIndex[0];
-      result = [];
-      for (i=1/*NB*/; i < pageIndex.size(); i++) {
-        lineEnd =  lineStart + pageIndex[i];
-        string = self._bigString.substring(lineStart, lineEnd);
-        result.add(string);
-        lineStart = lineEnd;
-      }
-      return result;
-    }
 
     // Graphics
     function drawLineBoxes(dc) {
@@ -152,13 +101,13 @@ class PagerView extends Ui.View {
     }
 
     function drawPage(dc, validPageNumber) {
-      self.drawStrings(dc, self._getStrings(validPageNumber));
+      self.drawStrings(dc, self._text_backend.getStrings(validPageNumber));
     }
 
     // Navigation
     function goToPage(pageNumber) {
       print("Going to page " + pageNumber);
-      if (pageNumber >= 0 && pageNumber <= self.lastPageNumber) {
+      if (pageNumber >= 0 && pageNumber <= self._text_backend.getLastPageNumber()) {
           self.currentPageNumber = pageNumber;
           Ui.requestUpdate();
           self._saveCurrentPageNumber(self.currentPageNumber);
@@ -188,7 +137,7 @@ class PagerView extends Ui.View {
     function showHumanPosition() {
       // because humans count from 1, not 0
       return format("$1$/$2$", [self.currentPageNumber + 1,
-                                self.lastPageNumber + 1]);
+                                self._text_backend.getLastPageNumber() + 1]);
     }
 
     function applySettings() {
