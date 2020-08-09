@@ -16,7 +16,7 @@ class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
   private var _settings, _apply_settings_callback;
 
   function initialize(settings, apply_settings_callback) {
-    MenuInputDelegate.initialize();
+    Menu2InputDelegate.initialize();
     self._settings = settings;
     self._apply_settings_callback = apply_settings_callback;
   }
@@ -50,11 +50,11 @@ class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
 }
 
 
-class NavigationMenuDelegate extends Ui.MenuInputDelegate {
+class NavigationMenuDelegate extends Ui.Menu2InputDelegate {
   public var view;
 
   function initialize(view_) {
-    MenuInputDelegate.initialize();
+    Menu2InputDelegate.initialize();
 
     // package as a navigator dict/object or something
     self.view = view_;

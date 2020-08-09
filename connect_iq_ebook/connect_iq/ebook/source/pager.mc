@@ -5,18 +5,39 @@ using Toybox.Timer;
 using Toybox.Sensor;
 using Toybox.Math;
 
+using TextBackends;
+
 // TODO settings manager/module
 const DEFAULT_SETTINGS = {
   "colors" => "dark",
   "shake_to_flip" => false,
 };
 
+
 class PagerView extends Ui.View {
 
     public var settings;
-    private var  _book, _shakeToFlipTimer;  // TODO camelcase
+    private var _book, _shakeToFlipTimer;
+
+    var dummy = new Book("Dummy", new TextBackends.DummyTextBackend());
+
+    function switcharoo(bookNum) {
+    print(bookNum);
+    if (bookNum == 1) {
+        self._book = new Book(
+        "Chunks", new TextBackends.RezTextBackend(CHUNKS));
+      } else if (bookNum == 2) {
+        self._book = new Book(
+        "Dummy", new TextBackends.DummyTextBackend());
+      }
+    }
 
     function initialize() {
+
+      self._book = dummy;
+
+      print(self._book);
+      print("Marvelous book called " + self._book.name);
       View.initialize();
 
       self.settings = App.getApp().getProperty("settings");
@@ -27,8 +48,6 @@ class PagerView extends Ui.View {
         self.settings = DEFAULT_SETTINGS;
       }
 
-      /* = new TextBackends.RezTextBackend(CHUNKS); */
-      self._book = new Book("Dummy", new TextBackends.DummyTextBackend());
 
       self._shakeToFlipTimer = new Timer.Timer();
 
@@ -87,9 +106,9 @@ class PagerView extends Ui.View {
       self.drawStrings(dc, self._book.getStrings());
     }
 
-    // Navigation
     
     function showNextPage() {
+      self.switcharoo(2);
       self._book.goToNextPage();
       Ui.requestUpdate();
     }
@@ -100,6 +119,7 @@ class PagerView extends Ui.View {
     }
 
 
+    // Navigation
     function openNavigationMenu() {
       var navigationMenuView = new Rez.Menus.NavigationMenu();
       var title = self._book.showHumanPosition();
@@ -145,6 +165,7 @@ class PagerView extends Ui.View {
 
       dc.clear();
       self.drawPage(dc);
+
       /* drawLineBoxes(dc); */
     }
 

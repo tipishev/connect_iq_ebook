@@ -4,6 +4,10 @@ class Book {
   public var name, currentPageNumber;
   private var _textBackend;
 
+  function toString() {
+    return "<Book \"" + self.name + "\">";
+  }
+
   function initialize(name, textBackend) {
     self.name = name;
     self._textBackend = textBackend;
@@ -42,14 +46,12 @@ class Book {
   // TODO use Storage for better persistence guarantee
   function _loadCurrentPageNumber() {
     var bookmarks = App.getApp().getProperty("bookmarks");
-    if (bookmarks == null) {
-      return 0;
-    } else if (bookmarks[self.name] == null) {
+    if (bookmarks == null || bookmarks[self.name] == null) {
       return 0;
     } else {
       return bookmarks[self.name];
     }
-    // FIXME handle under/overflow
+    // FIXME handle under/overflow with min/max on 0 and lastPage
   }
 
   function _saveCurrentPageNumber() {
@@ -60,5 +62,4 @@ class Book {
     bookmarks[self.name] = self.currentPageNumber;
     App.getApp().setProperty("bookmarks", bookmarks);
   }
-
 }

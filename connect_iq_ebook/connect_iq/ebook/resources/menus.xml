@@ -11,8 +11,9 @@
   <menu-item id="colors_dark" label="Dark" />
  </menu>
 
- <menu id="NavigationMenu" title="Navigation">
+ <menu2 id="NavigationMenu" title="Navigation">
   <menu-item id="go_to_page" label="Go to page" />
- </menu>
+  <menu-item id="library" label="Library" />
+ </menu2>
 
 </resources>
