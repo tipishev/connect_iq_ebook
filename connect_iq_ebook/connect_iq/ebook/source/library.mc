@@ -37,13 +37,15 @@ class Library {  // or BookFactory? :)
 
 class LibraryMenu extends Ui.Menu2 {
 
-  function initialize(bookNames) {
+  function initialize() {
+    var library = App.getApp().library;
+
     // TODO :focus=> on current book
-    Ui.Menu2.initialize({:title=>"Lib Menu"});
+    Ui.Menu2.initialize({:title=>"Library"});
 
     var bookIndex, bookName, menuItem;
-    for(bookIndex = 0; bookIndex < bookNames.size(); bookIndex++ ) {
-      bookName = bookNames[bookIndex];
+    for(bookIndex = 0; bookIndex < library.books.size(); bookIndex++ ) {
+      bookName = library.books[bookIndex];
 
       // TODO use IconMenuItem for fanciness
       menuItem = new Ui.MenuItem(
@@ -69,7 +71,7 @@ class LibraryMenuDelegate extends Ui.Menu2InputDelegate {
 
   function onSelect(item) {
     var bookName = item.getId();
-    print("Opening " + bookName);
+    print("Opening book " + bookName);
     var library = App.getApp().library;
     self.pager.book = library.loadBook(bookName);
 

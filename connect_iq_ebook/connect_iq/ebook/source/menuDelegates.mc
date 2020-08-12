@@ -52,13 +52,13 @@ class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
 
 
 class NavigationMenuDelegate extends Ui.Menu2InputDelegate {
-  public var view;
+  public var pager;
 
-  function initialize(view_) {
+  function initialize(pager_) {
     Menu2InputDelegate.initialize();
 
     // package as a navigator dict/object or something
-    self.view = view_;
+    self.pager = pager_;
 
   }
 
@@ -67,14 +67,13 @@ class NavigationMenuDelegate extends Ui.Menu2InputDelegate {
     var itemId = item.getId();
 
     if ( itemId == :go_to_page ) {
-      var pagePicker =  new PagePicker(self.view);
+      var pagePicker =  new PagePicker(self.pager);
       var pagePickerDelegate = new PagePickerDelegate(pagePicker);
       Ui.popView(Ui.SLIDE_IMMEDIATE);  // to show picker immediately
       Ui.pushView(pagePicker, pagePickerDelegate, Ui.SLIDE_RIGHT);
     } else if ( itemId == :library ) {
-      var library = App.getApp().library;
-      var libraryMenu = new LibraryMenu(library.books);
-      var libraryMenuDelegate = new LibraryMenuDelegate(view);
+      var libraryMenu = new LibraryMenu();
+      var libraryMenuDelegate = new LibraryMenuDelegate(pager);
       Ui.pushView(libraryMenu, libraryMenuDelegate, Ui.SLIDE_RIGHT);
     }
   }
