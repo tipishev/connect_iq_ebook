@@ -16,13 +16,13 @@ const DEFAULT_SETTINGS = {
 
 class PagerView extends Ui.View {
 
-    public var settings;
-    private var _book, _shakeToFlipTimer;
+    public var settings, book;
+    private var _shakeToFlipTimer;
 
     function initialize() {
       var app = App.getApp();
 
-      self._book = app.library.loadCurrentBook();
+      self.book = app.library.loadCurrentBook();
 
       View.initialize();
 
@@ -89,17 +89,17 @@ class PagerView extends Ui.View {
     }
 
     function drawPage(dc) {
-      self.drawStrings(dc, self._book.getStrings());
+      self.drawStrings(dc, self.book.getStrings());
     }
 
     
     function showNextPage() {
-      self._book.goToNextPage();
+      self.book.goToNextPage();
       Ui.requestUpdate();
     }
 
     function showPreviousPage() {
-      self._book.goToPreviousPage();
+      self.book.goToPreviousPage();
       Ui.requestUpdate();
     }
 
@@ -107,7 +107,7 @@ class PagerView extends Ui.View {
     // Navigation
     function openNavigationMenu() {
       var navigationMenuView = new Rez.Menus.NavigationMenu();
-      var title = self._book.showHumanPosition();
+      var title = self.book.showHumanPosition();
       navigationMenuView.setTitle(title);
 
       var navigationMenuDelegate = new NavigationMenuDelegate(self);

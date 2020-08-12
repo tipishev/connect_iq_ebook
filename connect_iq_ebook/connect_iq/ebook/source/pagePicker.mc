@@ -89,7 +89,7 @@ class PagePickerDelegate extends Ui.PickerDelegate {
               var previewPageNumber = preview.toNumber();
 
               // TODO shorten
-              var lastPageNumber = self._picker.view._book._textBackend.getLastPageNumber() + 1;
+              var lastPageNumber = self._picker.view.book._textBackend.getLastPageNumber() + 1;
 
               if (previewPageNumber <= lastPageNumber) {
                 var showCursor = previewPageNumber * 10 < lastPageNumber;

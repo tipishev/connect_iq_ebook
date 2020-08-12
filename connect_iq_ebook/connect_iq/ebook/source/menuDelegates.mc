@@ -73,15 +73,9 @@ class NavigationMenuDelegate extends Ui.Menu2InputDelegate {
       Ui.pushView(pagePicker, pagePickerDelegate, Ui.SLIDE_RIGHT);
     } else if ( itemId == :library ) {
       var library = App.getApp().library;
-      var view = new LibraryMenu(library.books);
-      var delegate = new LibraryMenuDelegate();
-      Ui.pushView(view, delegate, Ui.SLIDE_RIGHT);
+      var libraryMenu = new LibraryMenu(library.books);
+      var libraryMenuDelegate = new LibraryMenuDelegate(view);
+      Ui.pushView(libraryMenu, libraryMenuDelegate, Ui.SLIDE_RIGHT);
     }
   }
 }
-
-/* class LibraryMenuDelegate extends Ui.Menu2InputDelegate { */
-/*   private */
-
-
-/* } */

@@ -48,7 +48,7 @@ class LibraryMenu extends Ui.Menu2 {
       // TODO use IconMenuItem for fanciness
       menuItem = new Ui.MenuItem(
         bookName, // label
-        "read 47%", // sublabel
+        "read 47%", // sublabel  // TODO show real progress
         bookName,  // identifier
         {});
 
@@ -60,4 +60,20 @@ class LibraryMenu extends Ui.Menu2 {
 
 class LibraryMenuDelegate extends Ui.Menu2InputDelegate {
 
+  var pager;  // FIXME make a method
+
+  function initialize(pager_) {
+    Menu2InputDelegate.initialize();
+    self.pager = pager_;
+  }
+
+  function onSelect(item) {
+    var bookName = item.getId();
+    print("Opening " + bookName);
+    var library = App.getApp().library;
+    self.pager.book = library.loadBook(bookName);
+
+    Ui.popView(Ui.SLIDE_IMMEDIATE); // to nav menu
+    Ui.popView(Ui.SLIDE_IMMEDIATE); // to pager
+  }
 }
