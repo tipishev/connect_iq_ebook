@@ -112,7 +112,7 @@ class Chunker:
                     self.buffer.seek(before_page)  # next chunk deals with it
                     break
                 else:
-                    #  self.debug_print_page(page_text, page_index)  # FIXME
+                    #  self.debug_print_page(page_text, page_index)
                     chunk_text += page_text
                     chunk_size_in_bytes = prospective_bytes_size
                     chunk_index.append(page_index)

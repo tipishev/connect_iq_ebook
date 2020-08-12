@@ -39,7 +39,7 @@ def make_ebook():
                 source_buffer=f,
                 devices=[device],
             )
-            compiler.compile(output_filename=f'{app_name}.prg')
+            compiler.compile(output_filename=f'eBook.prg')
     except FileNotFoundError as e:
         err(e)
         return
