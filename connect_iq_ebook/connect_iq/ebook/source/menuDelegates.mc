@@ -74,6 +74,7 @@ class NavigationMenuDelegate extends Ui.Menu2InputDelegate {
     } else if ( itemId == :library ) {
       var libraryMenu = new LibraryMenu();
       var libraryMenuDelegate = new LibraryMenuDelegate(pager);
+      Ui.popView(Ui.SLIDE_IMMEDIATE);  // to show picker immediately
       Ui.pushView(libraryMenu, libraryMenuDelegate, Ui.SLIDE_RIGHT);
     }
   }

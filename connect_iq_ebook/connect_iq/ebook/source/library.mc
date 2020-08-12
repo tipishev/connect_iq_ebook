@@ -13,6 +13,7 @@ class Library {  // or BookFactory? :)
   
   function initialize() {
     // TODO make it a dict?
+    // TODO book database? to store name, metadata, current progress
     // TODO load book-making recipies from Rez
     self.books = ["Chunks", "Dummy"];
   }
@@ -74,8 +75,6 @@ class LibraryMenuDelegate extends Ui.Menu2InputDelegate {
     print("Opening book " + bookName);
     var library = App.getApp().library;
     self.pager.book = library.loadBook(bookName);
-
-    Ui.popView(Ui.SLIDE_IMMEDIATE); // to nav menu
-    Ui.popView(Ui.SLIDE_IMMEDIATE); // to pager
+    Ui.popView(Ui.SLIDE_IMMEDIATE);
   }
 }
