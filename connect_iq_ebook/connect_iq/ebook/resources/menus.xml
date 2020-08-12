@@ -12,8 +12,8 @@
  </menu>
 
  <menu2 id="NavigationMenu" title="Navigation">
-  <menu-item id="go_to_page" label="Go to page" />
   <menu-item id="library" label="Library" />
+  <menu-item id="go_to_page" label="Go to page" />
  </menu2>
 
 </resources>

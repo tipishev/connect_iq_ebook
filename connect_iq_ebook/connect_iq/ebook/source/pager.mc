@@ -19,28 +19,14 @@ class PagerView extends Ui.View {
     public var settings;
     private var _book, _shakeToFlipTimer;
 
-    var dummy = new Book("Dummy", new TextBackends.DummyTextBackend());
-
-    function switcharoo(bookNum) {
-    print(bookNum);
-    if (bookNum == 1) {
-        self._book = new Book(
-        "Chunks", new TextBackends.RezTextBackend(CHUNKS));
-      } else if (bookNum == 2) {
-        self._book = new Book(
-        "Dummy", new TextBackends.DummyTextBackend());
-      }
-    }
-
     function initialize() {
+      var app = App.getApp();
 
-      self._book = dummy;
+      self._book = app.library.loadCurrentBook();
 
-      print(self._book);
-      print("Marvelous book called " + self._book.name);
       View.initialize();
 
-      self.settings = App.getApp().getProperty("settings");
+      self.settings = app.getProperty("settings");
 
       // TODO handle newly-appearing keys: check all necessary keys
       // TODO settings manager
@@ -108,7 +94,6 @@ class PagerView extends Ui.View {
 
     
     function showNextPage() {
-      self.switcharoo(2);
       self._book.goToNextPage();
       Ui.requestUpdate();
     }

@@ -1,6 +1,7 @@
 using Toybox.Application as App;
 
 class Book {
+  // a persistence and metadata (e.g book name, author) wrapper around stateless TextBackend
   public var name, currentPageNumber;
   private var _textBackend;
 

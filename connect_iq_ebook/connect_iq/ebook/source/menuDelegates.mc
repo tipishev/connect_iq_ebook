@@ -1,3 +1,4 @@
+using Toybox.Application as App;
 using Toybox.WatchUi as Ui;
 
 class ColorsMenuDelegate extends Ui.MenuInputDelegate {
@@ -61,12 +62,26 @@ class NavigationMenuDelegate extends Ui.Menu2InputDelegate {
 
   }
 
-  function onMenuItem(item) {
-    if ( item == :go_to_page ) {
+  function onSelect(item) {
+
+    var itemId = item.getId();
+
+    if ( itemId == :go_to_page ) {
       var pagePicker =  new PagePicker(self.view);
       var pagePickerDelegate = new PagePickerDelegate(pagePicker);
       Ui.popView(Ui.SLIDE_IMMEDIATE);  // to show picker immediately
       Ui.pushView(pagePicker, pagePickerDelegate, Ui.SLIDE_RIGHT);
+    } else if ( itemId == :library ) {
+      var library = App.getApp().library;
+      var view = new LibraryMenu(library.books);
+      var delegate = new LibraryMenuDelegate();
+      Ui.pushView(view, delegate, Ui.SLIDE_RIGHT);
     }
   }
 }
+
+/* class LibraryMenuDelegate extends Ui.Menu2InputDelegate { */
+/*   private */
+
+
+/* } */
