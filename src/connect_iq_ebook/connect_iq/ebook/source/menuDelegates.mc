@@ -16,7 +16,7 @@ class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
   private var _settings, _apply_settings_callback;
 
   function initialize(settings, apply_settings_callback) {
-    MenuInputDelegate.initialize();
+    Menu2InputDelegate.initialize();
     self._settings = settings;
     self._apply_settings_callback = apply_settings_callback;
   }

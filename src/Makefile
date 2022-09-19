@@ -5,7 +5,7 @@ CONNECTIQ_SDK_DIR="/home/user/connectiq/connectiq-sdk-lin-3.1.9-2020-06-24-1cc9d
 PRG_NAME="test.prg"
 DEVICE_ID="fenix5"
 
-BIN=./venv/bin
+BIN=../venv/bin
 
 test:
 	$(BIN)/python -m unittest $(TESTS_PATH)
