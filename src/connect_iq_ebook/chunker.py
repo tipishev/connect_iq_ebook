@@ -76,7 +76,7 @@ class Chunker:
             if start_position != end_position:
                 yield page_text, page_index
             else:
-                raise StopIteration()
+                return
 
     def debug_print_page(self, page_text, page_index):
         buffer = StringIO(page_text)
@@ -121,4 +121,4 @@ class Chunker:
                 for index in chunk_index:
                     index[0] -= chunk_start
                 yield chunk_text, chunk_index
-        raise StopIteration()
+        return
