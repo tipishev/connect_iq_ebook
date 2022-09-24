@@ -55,6 +55,7 @@ class Compiler:
         assert len(self.devices) == 1, 'multiple devices are not implemented'
         device = self.devices[0]
         output_path = join(self.workspace.name, 'output.prg')
+        breakpoint()
         call([
             JAVA_8_PATH,
             '-jar', join(CONNECT_IQ_BIN_DIR, 'monkeybrains.jar'),

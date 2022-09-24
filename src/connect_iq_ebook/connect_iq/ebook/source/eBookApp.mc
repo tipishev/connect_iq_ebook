@@ -18,5 +18,4 @@ class eBookApp extends App.AppBase {
      var pagerDelegate = new PagerDelegate(pagerView);
      return [pagerView, pagerDelegate];
     }
-
 }

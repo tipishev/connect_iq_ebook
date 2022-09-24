@@ -36,10 +36,6 @@ class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
       Ui.pushView(aboutView, aboutDelegate, Ui.SLIDE_LEFT);
     }
 
-    else if ( itemId == :shake_to_flip ) {
-      self._settings["shake_to_flip"] = item.isEnabled();
-    }
-
   }
 
   function onBack() {
@@ -48,7 +44,6 @@ class SettingsMenuDelegate extends Ui.Menu2InputDelegate {
   }
 
 }
-
 
 class NavigationMenuDelegate extends Ui.MenuInputDelegate {
   public var view;

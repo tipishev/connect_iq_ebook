@@ -2,7 +2,6 @@
 
  <menu2 id="SettingsMenu" title="Settings">
   <menu-item id="settings_colors" label="Colors" />
-  <toggle-menu-item id="shake_to_flip" label="Shake To Flip" />
   <menu-item id="about" label="About" />
  </menu2>
 
